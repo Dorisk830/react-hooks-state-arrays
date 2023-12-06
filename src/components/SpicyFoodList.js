@@ -6,12 +6,27 @@ function SpicyFoodList() {
 
   function handleAddFood() {
     const newFood = getNewRandomSpicyFood();
-    console.log(newFood);
+    const newFoodArray = [...foods, newFood];
+    setFoods(newFoodArray);
   }
 
-  const foodList = foods.map((food) => (
-    <li key={food.id}>
-      {food.name} | Heat: {food.heatLevel} | Cuisine: {food.cuisine}
+  function handleRemoveFood(id) {
+    const newFoodArray = foods.filter((food) => food.id !== id);
+    setFoods(newFoodArray);
+  }
+
+  function handleIncreaseHeat(id) {
+    const newFoodArray = foods.map((food) =>
+      food.id === id ? { ...food, heatLevel: food.heatLevel + 1 } : food
+    );
+    setFoods(newFoodArray);
+  }
+
+  const foodList = foods.map(({ id, name, heatLevel, cuisine }) => (
+    <li key={id} style={{ cursor: "pointer" }}>
+      {name} | Heat: {heatLevel} | Cuisine: {cuisine}
+      <button onClick={() => handleIncreaseHeat(id)}>Increase Heat</button>
+      <button onClick={() => handleRemoveFood(id)}>Remove</button>
     </li>
   ));
 
